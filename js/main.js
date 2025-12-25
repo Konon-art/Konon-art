@@ -1,6 +1,6 @@
 var works = [
   {
-    id: 2, // idも合わせて変更しておくと管理しやすいです
+    id: 2, 
     mainImage: 'images/work2/main.jpg',
     title: '「anemoi」白渡小詠',
     subtitle: 'ラフ時点では可愛く描けたと思います  -  2025/12/25',
@@ -18,7 +18,7 @@ var works = [
     processSubtitle: '制作過程を公開!'
   },
   {
-    id: 1, // idも合わせて変更
+    id: 1,
     mainImage: 'images/work1/main.jpg',
     title: '「さくら、もゆ。」クロのお誕生日記念イラスト',
     subtitle: '初のデジタルイラスト  -  2025/2/22',
@@ -49,7 +49,7 @@ function renderPortfolio() {
       <div class="work-section">
         <div class="work-item-header completed-header">
           <h3 class="work-item-title">Completed Illustration</h3>
-          <p class="work-item-subtitle">— 完成イラスト —</p>
+          <p class="work-item-subtitle">----— 完成イラスト —----</p>
         </div>
         <div class="work-display">
           <div class="work-image-wrapper">
@@ -93,7 +93,7 @@ function renderPortfolio() {
       <div class="work-section process-section">
         <div class="work-item-header">
           <h3 class="work-item-title">Rough & Process</h3>
-          <p class="work-item-subtitle">— ラフ・工程 —</p>
+          <p class="work-item-subtitle">----— ラフ・工程 —----</p>
         </div>
         <div class="work-display">
           <div class="process-images">
