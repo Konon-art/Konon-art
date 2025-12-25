@@ -288,7 +288,6 @@ body {
   padding: 0 20px; /* 左右に余白を追加 */
 }
 
-/* ↓ セレクタを '.completed-work-info .title-partition' に変更 */
 .completed-work-info .title-partition {
   height: 1px;
   width: 60%;
@@ -300,18 +299,6 @@ body {
   );
 }
 
-/* ↓ここから下の古いスタイルを削除 */
-/*
-.process-section { ... }
-.process-display { ... }
-.process-images { ... }
-.process-image { ... }
-.arrow { ... }
-.arrow-icon { ... }
-*/
-/* ↑ここまで変更 */
-
-/* ↓そして、以下の新しいスタイルを追加 */
 
 .process-section .process-images {
   display: flex;
