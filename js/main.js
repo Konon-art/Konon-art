@@ -193,16 +193,19 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       // カウントを更新
-      await fetch('https://<project-id>.supabase.co/rest/v1/counts?name=eq.page_views', {
+      await fetch('https://azbbbzzemhmyltrgwzdp.supabase.co/rest/v1/counts?name=eq.page_views', {
         method: 'PATCH',
         headers: {
-          'apikey': '<your-anon-key>',
-          'Authorization': 'Bearer <your-anon-key>',
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
           'Content-Type': 'application/json',
           'Prefer': 'return=minimal'
         },
         body: JSON.stringify({ views: newViews })
       });
+
+      // カウンターの位置を調整
+      adjustCounterPosition();
 
     } catch (error) {
       console.error('Counter Error:', error);
@@ -218,5 +221,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  function adjustCounterPosition() {
+    const counter = document.getElementById('visitor-counter-container');
+    const mainContainer = document.querySelector('.container');
+    if (!counter || !mainContainer) return;
+
+    const mainWidth = mainContainer.offsetWidth;
+    const counterWidth = counter.offsetWidth;
+    const windowWidth = window.innerWidth;
+
+    // (カウンターの幅 * 2) + メインコンテンツの幅 が 画面幅より小さいかチェック
+    if ((counterWidth * 2 + mainWidth) < windowWidth) {
+      counter.classList.add('counter-fixed-left');
+    } else {
+      counter.classList.remove('counter-fixed-left');
+    }
+  }
+
   updateCounter();
+
+  // 画面のリサイズ時にも位置を調整
+  window.addEventListener('resize', adjustCounterPosition);
 });

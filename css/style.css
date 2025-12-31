@@ -359,8 +359,37 @@ body {
 .lightbox-content {
   max-width: 90%;
   max-height: 90%;
-  object-fit: contain;
-  cursor: default;
+}
+
+/* --- Visitor Counter --- */
+#visitor-counter-container {
+  margin: 20px auto;
+  padding: 8px 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  width: fit-content;
+  transition: all 0.3s ease-in-out;
+}
+
+#visitor-counter-container #visitor-count {
+  font-weight: bold;
+  color: #333;
+  margin: 0 4px;
+}
+
+/* 左側余白に固定表示するためのスタイル */
+.counter-fixed-left {
+  position: fixed;
+  left: 20px; /* 左からの距離 */
+  top: 50%;   /* 上から50%の位置を基準に */
+  transform: translateY(-50%); /* 要素の高さの半分だけ上に移動して中央揃え */
+  margin: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .lightbox-close {
