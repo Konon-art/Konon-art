@@ -163,4 +163,60 @@ document.addEventListener('DOMContentLoaded', function() {
   if (closeBtn) {
     closeBtn.addEventListener('click', closeLightbox);
   }
+
+  // --- Visitor Counter ---
+  const countEl = document.getElementById('visitor-count');
+
+  async function updateCounter() {
+    try {
+      // 注意: このURLはダミーです。実際のSupabaseのURLに置き換えてください。
+      let response = await fetch('https://azbbbzzemhmyltrgwzdp.supabase.co/rest/v1/counts?select=views&name=eq.page_views', {
+        method: 'GET',
+        headers: {
+          // 注意: このAPIキーはダミーです。実際のSupabaseのanonキーに置き換えてください。
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch count');
+      }
+
+      let data = await response.json();
+      let currentViews = data[0].views;
+      const newViews = currentViews + 1;
+
+      // 画面に表示
+      if(countEl) {
+        countEl.textContent = newViews;
+      }
+
+      // カウントを更新
+      await fetch('https://<project-id>.supabase.co/rest/v1/counts?name=eq.page_views', {
+        method: 'PATCH',
+        headers: {
+          'apikey': '<your-anon-key>',
+          'Authorization': 'Bearer <your-anon-key>',
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify({ views: newViews })
+      });
+
+    } catch (error) {
+      console.error('Counter Error:', error);
+      if(countEl) {
+        // エラーが発生した場合は、カウンター部分を非表示にするか、メッセージを表示
+        const counterContainer = document.getElementById('visitor-counter-container');
+        if (counterContainer) {
+          counterContainer.style.display = 'none'; // 非表示にする
+          // または
+          // countEl.textContent = '---'; // 代替テキスト
+        }
+      }
+    }
+  }
+
+  updateCounter();
 });
