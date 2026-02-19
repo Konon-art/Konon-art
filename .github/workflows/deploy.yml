@@ -1,10 +1,9 @@
 name: Deploy to GitHub Pages
 
 on:
-  # mainブランチにプッシュされたときに実行
-  push:
-    branches:
-      - main
+  # 毎日日本時間午前9時に実行 (UTCの0時)
+  schedule:
+    - cron: '0 0 * * *'
   # Actionsタブから手動でワークフローを実行できるようにする
   workflow_dispatch:
 
