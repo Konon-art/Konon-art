@@ -168,12 +168,19 @@ document.addEventListener('DOMContentLoaded', function() {
   const countEl = document.getElementById('visitor-count');
 
   async function updateCounter() {
+    const lastCountedDate = localStorage.getItem('lastCountedDate');
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD形式
+    let shouldIncrement = true;
+
+    if (lastCountedDate === today) {
+      shouldIncrement = false; // 今日はすでにカウント済み
+    }
+
     try {
-      // 注意: このURLはダミーです。実際のSupabaseのURLに置き換えてください。
+      // まず現在のカウント数を取得
       let response = await fetch('https://azbbbzzemhmyltrgwzdp.supabase.co/rest/v1/counts?select=views&name=eq.page_views', {
         method: 'GET',
         headers: {
-          // 注意: このAPIキーはダミーです。実際のSupabaseのanonキーに置き換えてください。
           'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs'
         }
@@ -185,24 +192,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
       let data = await response.json();
       let currentViews = data[0].views;
-      const newViews = currentViews + 1;
+      let displayViews = currentViews;
+
+      if (shouldIncrement) {
+        const newViews = currentViews + 1;
+        displayViews = newViews;
+
+        // カウントを更新
+        await fetch('https://azbbbzzemhmyltrgwzdp.supabase.co/rest/v1/counts?name=eq.page_views', {
+          method: 'PATCH',
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ views: newViews })
+        });
+        
+        // カウントした日を記録
+        localStorage.setItem('lastCountedDate', today);
+      }
 
       // 画面に表示
       if(countEl) {
-        countEl.textContent = newViews;
+        countEl.textContent = displayViews;
       }
-
-      // カウントを更新
-      await fetch('https://azbbbzzemhmyltrgwzdp.supabase.co/rest/v1/counts?name=eq.page_views', {
-        method: 'PATCH',
-        headers: {
-          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6YmJienplbWhteWx0cmd3emRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjcxODIxNDcsImV4cCI6MjA4Mjc1ODE0N30.u0u7YEwruWQofSenDqRm4OwMyQlRk_5OXMtu6c62gxs',
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify({ views: newViews })
-      });
 
       // カウンターの位置を調整
       adjustCounterPosition();
@@ -214,8 +229,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const counterContainer = document.getElementById('visitor-counter-container');
         if (counterContainer) {
           counterContainer.style.display = 'none'; // 非表示にする
-          // または
-          // countEl.textContent = '---'; // 代替テキスト
         }
       }
     }
