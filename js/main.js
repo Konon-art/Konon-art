@@ -163,6 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (closeBtn) {
     closeBtn.addEventListener('click', closeLightbox);
   }
+  
 
   // --- Visitor Counter ---
   const countEl = document.getElementById('visitor-count');
