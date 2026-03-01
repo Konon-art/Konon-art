@@ -3,7 +3,7 @@ var works = [
     id: 2, 
     mainImage: 'images/work2/main.jpg',
     title: '「anemoi」白渡小詠',
-    subtitle: 'ラフ時点では可愛く描けたと思います  -  2025/12/25',
+    subtitle: '発売応援の絵です  -  2026/3/01',
     hasTimelapse: true,
     timelapseVideo: 'videos/work2_timelapse.mp4',
     timelapseThumbnail: 'images/work2/timelapse_thumb.jpg',
